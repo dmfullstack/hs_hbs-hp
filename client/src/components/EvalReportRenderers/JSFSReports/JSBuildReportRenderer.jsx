@@ -1,0 +1,49 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
+import {grey50} from 'material-ui/styles/colors';
+
+export default class JSBuildReportRenderer extends React.Component {
+
+  static get contextTypes() {
+  	return { evaluation: PropTypes.object.isRequired };
+  }
+
+  getReport = () => {
+  	let details = this.context.evaluation.evalFindings.build;
+  	return (
+  		<Card initiallyExpanded={true} style={{margin: '5px 0'}}>
+	      <CardHeader
+	        style={{background: '#2c8ebb'}}
+	        title="Project Build"
+	        titleStyle={{fontSize: "24px"}}
+	        titleColor={grey50}
+	        subtitle="validating project build and dependency management"
+	        subtitleColor={"#bbbbbb"}
+	        actAsExpander={true}
+	        showExpandableButton={true}>
+	      </CardHeader>
+	      <CardText expandable={true}>
+		  		<div>
+			  		<div>
+			  			<p style={{fontFamily: "courier"}}>STDOUT: {details.output.replace(/workspaces\/[^/]+\/submission/g, '')}</p>
+			  		</div>
+			  		<div>
+			  			<p style={{fontFamily: "courier"}}>{ (details.errors)? 'STDERR: ' + details.errors.replace(/workspaces\/[^/]+\/submission/g, ''): ''}</p>
+			  		</div>
+		  		</div>
+	  		</CardText>
+  		</Card>
+  	)
+  }
+	render() {
+		return (
+			<div>
+				{this.context.evaluation &&
+				this.context.evaluation.evalFindings &&
+				this.context.evaluation.evalFindings.build &&
+				 this.getReport()}
+			</div>
+		)
+	}
+}

@@ -1,0 +1,7 @@
+const app = require('../server/app')();
+
+const port = require('../server/config').PORT;
+
+app.listen(port, () => {
+  console.log('Express server listening on port:', port);
+});

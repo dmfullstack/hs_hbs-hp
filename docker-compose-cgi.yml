@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  hobbes-http-cgi:
+    image: hobbes-http-cgi
+    build: .
+    network_mode: host
+    ports:
+      - 3001:3001
+    restart: always
+    volumes:
+      - ./ssh:/ssh
+    env_file: "docker-${HOBBES_INSTANCE_ENV}.env"
+    entrypoint:
+      - /bin/sh
+      - -c
+      - 'npm run serve'

@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  hobbes-http:
+    image: hobbes-http
+    build: .
+    logging:
+      driver: "awslogs"
+      options:
+        awslogs-region: "ap-south-1"
+        awslogs-group: "Hobbes-Container-Logs"
+        awslogs-stream: "Hobbes-${HOBBES_INSTANCE_ENV}-HTTP-Prod_hobbes-http"
+    network_mode: host
+    ports:
+      - 3000:3000
+    restart: always
+    volumes:
+      - ./ssh:/ssh
+    env_file: "docker-${HOBBES_INSTANCE_ENV}.env"
+    entrypoint:
+      - /bin/sh
+      - -c
+      - 'npm run serve'
